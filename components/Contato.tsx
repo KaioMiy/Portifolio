@@ -75,7 +75,7 @@ export default function Contato() {
         </motion.h2>
         
         <motion.p variants={itemVariants} className="text-gray-400 text-lg md:text-xl mb-12 max-w-2xl">
-          Estou sempre aberto a novos projetos, parcerias ou apenas um bom bate-papo sobre tecnologia, desenvolvimento e arquitetura. 
+          Estou sempre aberto a novos projetos, parcerias ou apenas um bom bate-papo sobre tecnologia, desenvolvimento e arquitetura de software. 
         </motion.p>
 
         {/* Grid de Botões (Os links herdam o staggerChildren do motion.div pai) */}
