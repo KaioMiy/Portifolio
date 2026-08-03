@@ -2,6 +2,8 @@ import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import Tecnologias from "../components/Tecnologias";
 import Projetos from "../components/Projetos";
+import Certificados from "../components/Certificados";
+import Experiencia from "@/components/Experiencia";
 
 export default function Home() {
   return (
@@ -17,6 +19,10 @@ export default function Home() {
 
       {/* Seção 3: Projetos em Destaque (Fundo Escuro) */}
       <Projetos />
+
+      <Certificados />
+
+      <Experiencia />
       
     </main>
   );

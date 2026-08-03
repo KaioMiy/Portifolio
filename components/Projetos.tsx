@@ -129,7 +129,7 @@ export default function Projetos() {
     },
     {
       id: 5,
-      titulo: "DocX",
+      titulo: "DocX SaaS",
       descricao: "Desenvolvimento Full Stack de uma plataforma SaaS web integrada com Inteligência Artificial, voltada para a automação e criação ágil de documentos para processos de licitação pública.",
       tecnologias: ["React", "Python", "IA"],
       linkProjeto: "",
@@ -138,26 +138,25 @@ export default function Projetos() {
         "/docx/1.png",
         "/docx/2.png",
         "/docx/3.png"
-
       ]
     },
     {
       id: 6,
-      titulo: "Museu Digital (Em Desenvolvimento)",
+      titulo: "Museu Digital", // Retirei o (Em Dev) do título para deixar mais limpo, já que a imagem avisa
       descricao: "Desenvolvimento Full Stack de um sistema interativo para a prefeitura, focado na digitalização, catalogação e exposição virtual de acervos históricos e culturais.",
       tecnologias: ["Next.js", "PostgreSQL", "Tailwind"],
       linkProjeto: "",
       linkGithub: "", 
-      galeria: [
-        "https://via.placeholder.com/800x450/111111/4B5563?text=Em+Breve+|+Em+Desenvolvimento"
-      ]
+      galeria: [] // Galeria vazia = sem imagem!
     }
   ];
 
   // --- FUNÇÕES DO MODAL ---
   const abrirModal = (projeto: Projeto) => {
-    setProjetoAberto(projeto);
-    setImagemAtual(0); 
+    if (projeto.galeria.length > 0) {
+      setProjetoAberto(projeto);
+      setImagemAtual(0); 
+    }
   };
 
   const fecharModal = () => {
@@ -210,25 +209,38 @@ export default function Projetos() {
                 key={projeto.id}
                 className="flex flex-col rounded-2xl bg-[#161616] border border-white/10 overflow-hidden group hover:-translate-y-2 hover:border-blue-500/50 hover:shadow-[0_0_30px_-5px_rgba(37,99,235,0.2)] transition-all duration-300"
               >
+                {/* Lógica Condicional para a Área da Imagem */}
                 <div 
-                  className="relative w-full aspect-video overflow-hidden bg-[#222] cursor-pointer"
+                  className={`relative w-full aspect-video overflow-hidden bg-[#222] ${projeto.galeria.length > 0 ? 'cursor-pointer' : 'cursor-default'}`}
                   onClick={() => abrirModal(projeto)}
                 >
-                  <div className="absolute inset-0 flex items-center justify-center bg-[#1a1a1a] text-gray-600 font-semibold z-0">
-                    {projeto.titulo}
-                  </div>
-                  <img 
-                    src={projeto.galeria[0]} 
-                    alt={projeto.titulo}
-                    className="w-full h-full object-cover relative z-10 group-hover:scale-105 transition-transform duration-500"
-                    onError={(e) => e.currentTarget.style.opacity = '0'} 
-                    onLoad={(e) => e.currentTarget.style.opacity = '1'}
-                  />
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex items-center justify-center">
-                    <span className="bg-blue-600 text-white text-sm font-bold px-4 py-2 rounded-full shadow-lg">
-                      Ver Galeria
-                    </span>
-                  </div>
+                  {projeto.galeria.length > 0 ? (
+                    <>
+                      <div className="absolute inset-0 flex items-center justify-center bg-[#1a1a1a] text-gray-600 font-semibold z-0">
+                        {projeto.titulo}
+                      </div>
+                      <img 
+                        src={projeto.galeria[0]} 
+                        alt={projeto.titulo}
+                        className="w-full h-full object-cover relative z-10 group-hover:scale-105 transition-transform duration-500"
+                        onError={(e) => e.currentTarget.style.opacity = '0'} 
+                        onLoad={(e) => e.currentTarget.style.opacity = '1'}
+                      />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex items-center justify-center">
+                        <span className="bg-blue-600 text-white text-sm font-bold px-4 py-2 rounded-full shadow-lg">
+                          Ver Galeria
+                        </span>
+                      </div>
+                    </>
+                  ) : (
+                    // Fundo que aparece quando a galeria está vazia (ex: Museu Digital)
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#1a1a1a] text-gray-500 font-semibold z-10">
+                      <svg className="w-8 h-8 mb-2 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                      </svg>
+                      Em desenvolvimento
+                    </div>
+                  )}
                 </div>
 
                 <div className="p-6 md:p-8 flex flex-col flex-grow">
@@ -290,7 +302,7 @@ export default function Projetos() {
       </section>
 
       {/* --- MODAL --- */}
-      {projetoAberto && (
+      {projetoAberto && projetoAberto.galeria.length > 0 && (
         <div 
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 md:p-12"
           onClick={fecharModal} 
