@@ -1,3 +1,51 @@
+"use client";
+
+import React from "react";
+import { motion, Variants } from "framer-motion";
+
+// Configurações de animação
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15, // Tempo entre a aparição de cada card
+    },
+  },
+};
+
+// Animação para os cards e textos (sobe suavemente)
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.6, ease: "easeOut" } 
+  },
+};
+
+// Animação exclusiva para as tags internas (efeito cascata menor)
+const tagContainerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05, // Tempo muito curto entre cada tecnologia
+      delayChildren: 0.2, // Espera o card aparecer primeiro
+    },
+  },
+};
+
+const tagVariants: Variants = {
+  hidden: { opacity: 0, scale: 0.8, y: 10 },
+  visible: { 
+    opacity: 1, 
+    scale: 1, 
+    y: 0, 
+    transition: { duration: 0.4, ease: "easeOut" } 
+  },
+};
+
 export default function Tecnologias() {
   const categorias = [
     {
@@ -52,7 +100,7 @@ export default function Tecnologias() {
 
   return (
     <section 
-      id="habilidades" 
+      id="tecnologias" 
       className="w-full py-24 px-6 md:px-12 bg-gray-50 relative z-10 overflow-hidden"
     >
       <div className="absolute inset-0 pointer-events-none z-0">
@@ -61,7 +109,14 @@ export default function Tecnologias() {
 
       <div className="max-w-7xl mx-auto w-full relative z-10">
         
-        <div className="mb-16 text-center max-w-3xl mx-auto">
+        {/* Cabeçalho animado (OnScroll - sempre reanima) */}
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.3 }} // <-- ALTERADO PARA FALSE AQUI
+          variants={itemVariants}
+          className="mb-16 text-center max-w-3xl mx-auto"
+        >
           <p className="text-blue-600 font-bold tracking-wider uppercase text-sm mb-3">
             Meu Arsenal
           </p>
@@ -72,13 +127,21 @@ export default function Tecnologias() {
             O ecossistema que utilizo para desenvolver soluções completas, 
             desde a infraestrutura e arquitetura de dados até a experiência do usuário final.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+        {/* Grid de cartões animado (OnScroll com Stagger - sempre reanima) */}
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.1 }} // <-- ALTERADO PARA FALSE AQUI
+          variants={containerVariants}
+          className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12"
+        >
           
           {categorias.map((bloco) => (
-            <div 
+            <motion.div 
               key={bloco.titulo} 
+              variants={itemVariants}
               className="p-8 md:p-10 rounded-2xl bg-white border border-gray-200 shadow-sm hover:shadow-lg transition-shadow duration-300 flex flex-col h-full"
             >
               <h3 className="font-title text-3xl font-bold text-gray-900 mb-2">
@@ -88,10 +151,15 @@ export default function Tecnologias() {
                 {bloco.descricao}
               </p>
               
-              <div className="flex flex-wrap gap-4">
+              {/* Cascata interna para as tecnologias */}
+              <motion.div 
+                variants={tagContainerVariants}
+                className="flex flex-wrap gap-4"
+              >
                 {bloco.tecnologias.map((tech) => (
-                  <div 
+                  <motion.div 
                     key={tech.nome} 
+                    variants={tagVariants}
                     className="flex items-center gap-3 px-5 py-3 bg-gray-50 border border-gray-100 rounded-xl hover:border-blue-500 hover:shadow-md hover:bg-white transition-all duration-300 cursor-default"
                   >
                     <img 
@@ -103,14 +171,14 @@ export default function Tecnologias() {
                     <span className="text-base font-semibold text-gray-700">
                       {tech.nome}
                     </span>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
 
-            </div>
+            </motion.div>
           ))}
 
-        </div>
+        </motion.div>
 
       </div>
     </section>

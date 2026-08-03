@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion, Variants } from "framer-motion";
 
 // --- ÍCONES ---
 function CloseIcon() {
@@ -25,6 +26,26 @@ type Certificado = {
   emissor: string;
   ano: string;
   imagem: string;
+};
+
+// --- VARIANTES DE ANIMAÇÃO ---
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1, // Como são muitos certificados, 0.1 deixa a cascata bem fluida
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.5, ease: "easeOut" } 
+  },
 };
 
 export default function Certificados() {
@@ -126,7 +147,14 @@ export default function Certificados() {
 
         <div className="max-w-7xl mx-auto w-full relative z-10">
           
-          <div className="mb-16 md:mb-20 text-center md:text-left">
+          {/* Título Animado */}
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3 }}
+            variants={itemVariants}
+            className="mb-16 md:mb-20 text-center md:text-left"
+          >
             <p className="text-blue-600 font-bold tracking-wider uppercase text-sm mb-3">
               Minha Trajetória
             </p>
@@ -137,20 +165,23 @@ export default function Certificados() {
               Minha base acadêmica e especializações que garantem a entrega de 
               soluções com segurança, escalabilidade e as melhores práticas.
             </p>
-          </div>
+          </motion.div>
 
-          {/* Alterado para 3 colunas (lg:grid-cols-3) para dar mais largura aos cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Grid Animado (Stagger) */}
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.1 }}
+            variants={containerVariants}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
             {listaCertificados.map((cert) => (
-              <div 
+              <motion.div 
                 key={cert.id}
+                variants={itemVariants}
                 className="flex flex-col bg-[#222222] rounded-xl overflow-hidden border border-white/10 hover:-translate-y-2 hover:border-blue-500/40 hover:shadow-[0_10px_30px_-10px_rgba(37,99,235,0.2)] transition-all duration-300 group cursor-pointer"
                 onClick={() => setCertificadoAberto(cert)}
               >
-                {/* 
-                  Alterado para aspect-[16/10] e removido o padding.
-                  Isso faz a imagem encostar nas bordas e ficar bem maior.
-                */}
                 <div className="relative w-full aspect-[16/10] bg-[#111] overflow-hidden flex items-center justify-center border-b border-white/5">
                   <img 
                     src={cert.imagem} 
@@ -179,20 +210,25 @@ export default function Certificados() {
                     </span>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
         </div>
       </section>
 
-      {/* --- MODAL --- */}
+      {/* --- MODAL COM ANIMAÇÃO --- */}
       {certificadoAberto && (
-        <div 
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-md p-4 md:p-12"
           onClick={fecharModal}
         >
-          <div 
+          <motion.div 
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.3 }}
             className="relative w-full max-w-5xl max-h-full flex flex-col items-center justify-center"
             onClick={(e) => e.stopPropagation()}
           >
@@ -213,8 +249,8 @@ export default function Certificados() {
               <h3 className="text-2xl font-bold text-white mb-1">{certificadoAberto.titulo}</h3>
               <p className="text-blue-400">{certificadoAberto.emissor} • {certificadoAberto.ano}</p>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
     </>
   );

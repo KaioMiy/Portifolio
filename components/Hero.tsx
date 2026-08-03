@@ -1,4 +1,7 @@
+"use client";
+
 import { ArrowDown } from "lucide-react";
+import { motion, Variants } from "framer-motion";
 
 // SVGs das Redes Sociais
 function GithubIcon() {
@@ -13,46 +16,69 @@ function LinkedinIcon() {
   );
 }
 
+// Configurações de animação do Framer Motion
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2, // Tempo de espera entre cada elemento aparecendo
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.6, ease: "easeOut" } 
+  },
+};
+
 export default function Hero() {
   return (
     <section 
-      id="sobre" 
+      id="inicio" 
       className="relative h-screen pt-20 px-6 md:px-12 flex items-center justify-center w-full overflow-hidden bg-[#0F0F0F]"
     >
       <div className="absolute inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff1a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff1a_1px,transparent_1px)] bg-[size:80px_80px] [mask-image:radial-gradient(ellipse_at_center,transparent_65%,black_100%)]"></div>
       </div>
 
-      {/* 
-        Grid de 12 colunas estabelecido aqui: grid-cols-1 lg:grid-cols-12
-        Isso trava o alinhamento de forma milimétrica para o resto da página.
-      */}
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10 scale-[1.05] lg:scale-[1.10] origin-center transition-transform">
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible" // <-- Alterado de animate para whileInView
+        viewport={{ once: false, amount: 0.1 }} // <-- Adicionado para reanimar sempre
+        className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10 scale-[1.05] lg:scale-[1.10] origin-center transition-transform"
+      >
         
-        {/* Coluna Esquerda - Ocupa 7 das 12 colunas (lg:col-span-7) */}
+        {/* Coluna Esquerda - Ocupa 7 das 12 colunas */}
         <div className="space-y-5 lg:col-span-7">
-          <p className="text-gray-400 font-medium tracking-wider uppercase text-xs md:text-sm">
+          <motion.p variants={itemVariants} className="text-gray-400 font-medium tracking-wider uppercase text-xs md:text-sm">
             Bem-vindo ao meu portfólio
-          </p>
+          </motion.p>
           
-          <h1 className="font-title text-4xl md:text-5xl lg:text-6xl font-bold text-gray-100 leading-tight">
+          <motion.h1 variants={itemVariants} className="font-title text-4xl md:text-5xl lg:text-6xl font-bold text-gray-100 leading-tight">
             Olá, eu sou <br />
             <span className="text-blue-600">
               Kaio Miyasato
             </span><br />
             Desenvolvedor Full Stack
-          </h1>
+          </motion.h1>
           
-          <p className="text-gray-400 text-base md:text-lg max-w-xl pb-2 md:pb-4">
+          <motion.p variants={itemVariants} className="text-gray-400 text-base md:text-lg max-w-xl pb-2 md:pb-4">
             Focado em construir experiências digitais incríveis, 
             performáticas e escaláveis para o usuário final.
-          </p>
+          </motion.p>
           
-          <div className="flex flex-col sm:flex-row gap-4 items-center pt-2">
+          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 items-center pt-2">
             
             <a 
               href="#projetos" 
-              className="px-6 py-3.5 w-full sm:w-auto rounded-lg bg-blue-600 text-white font-semibold flex items-center justify-center gap-2 text-sm md:text-base"
+              className="px-6 py-3.5 w-full sm:w-auto rounded-lg bg-blue-600 text-white font-semibold flex items-center justify-center gap-2 text-sm md:text-base hover:bg-blue-500 transition-colors"
             >
               Ver meus projetos
               <ArrowDown size={18} />
@@ -66,25 +92,24 @@ export default function Hero() {
             </a>
             
             <div className="flex items-center gap-3 pt-2 sm:pt-0">
-              <a href="#" className="p-3 bg-white rounded-lg text-black hover:bg-gray-200 transition-colors">
+              <a href="https://linkedin.com/in/SEUPERFIL" target="_blank" rel="noreferrer" className="p-3 bg-white rounded-lg text-black hover:bg-gray-200 transition-colors">
                 <LinkedinIcon />
               </a>
-              <a href="#" className="p-3 bg-white rounded-lg text-black hover:bg-gray-200 transition-colors">
+              <a href="https://github.com/SEUGITHUB" target="_blank" rel="noreferrer" className="p-3 bg-white rounded-lg text-black hover:bg-gray-200 transition-colors">
                 <GithubIcon />
               </a>
             </div>
 
-          </div>
+          </motion.div>
         </div>
 
-        {/* Coluna Direita - Ocupa 5 das 12 colunas (lg:col-span-5) */}
-        <div className="relative flex justify-center lg:justify-end w-full lg:col-span-5">
+        {/* Coluna Direita - Ocupa 5 das 12 colunas */}
+        <motion.div 
+          variants={itemVariants}
+          className="relative flex justify-center lg:justify-end w-full lg:col-span-5"
+        >
           <div className="w-full max-w-md p-6 sm:p-8 space-y-6 rounded-2xl bg-[#1a1a1a]/80 backdrop-blur-sm border border-white/5 shadow-[0_0_50px_10px_rgba(0,0,0,0.5)] relative z-10">
             
-            {/* 
-              Foto Expandida: 
-              Passou de w-32/w-40 para w-48 e lg:w-56. O círculo agora é bem maior.
-            */}
             <div className="relative w-40 sm:w-48 lg:w-56 mx-auto aspect-square overflow-hidden rounded-full border-4 border-[#2a2a2a] bg-[#0F0F0F]">
               <img 
                 src="/perfil.png" 
@@ -105,9 +130,9 @@ export default function Hero() {
               </p>
             </div>
           </div>
-        </div>
+        </motion.div>
 
-      </div>
+      </motion.div>
     </section>
   );
 }

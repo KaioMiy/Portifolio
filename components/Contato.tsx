@@ -1,5 +1,7 @@
 "use client";
 
+import { motion, Variants } from "framer-motion";
+
 function MailIcon() {
   return (
     <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
@@ -33,6 +35,26 @@ function GitHubIcon() {
   );
 }
 
+// --- VARIANTES DE ANIMAÇÃO ---
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.6, ease: "easeOut" } 
+  },
+};
+
 export default function Contato() {
   return (
     <section id="contato" className="w-full py-24 px-6 md:px-12 bg-[#050505] relative z-10 border-t border-white/5 overflow-hidden">
@@ -40,51 +62,81 @@ export default function Contato() {
       {/* Luzes de Fundo (Glow) */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-lg h-64 bg-blue-600/10 blur-[120px] rounded-full pointer-events-none"></div>
 
-      <div className="max-w-4xl mx-auto w-full relative z-10 flex flex-col items-center text-center">
+      <motion.div 
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, amount: 0.3 }}
+        variants={containerVariants}
+        className="max-w-4xl mx-auto w-full relative z-10 flex flex-col items-center text-center"
+      >
         
-        <h2 className="font-title text-4xl md:text-6xl font-bold text-gray-100 mb-6">
+        <motion.h2 variants={itemVariants} className="font-title text-4xl md:text-6xl font-bold text-gray-100 mb-6">
           Vamos construir algo <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">incrível?</span>
-        </h2>
+        </motion.h2>
         
-        <p className="text-gray-400 text-lg md:text-xl mb-12 max-w-2xl">
+        <motion.p variants={itemVariants} className="text-gray-400 text-lg md:text-xl mb-12 max-w-2xl">
           Estou sempre aberto a novos projetos, parcerias ou apenas um bom bate-papo sobre tecnologia, desenvolvimento e arquitetura. 
-        </p>
+        </motion.p>
 
-        {/* Grid de Botões */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl mb-24">
+        {/* Grid de Botões (Os links herdam o staggerChildren do motion.div pai) */}
+        <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl mb-24">
           
-          <a href="https://wa.me/+5515997816088" target="_blank" rel="noopener noreferrer" 
-             className="flex items-center justify-center gap-3 bg-[#111111] border border-white/5 hover:border-[#25D366] hover:bg-[#25D366]/10 text-gray-300 hover:text-[#25D366] px-6 py-4 rounded-xl transition-all duration-300 group">
+          <motion.a 
+             variants={itemVariants}
+             href="https://wa.me/+5515997816088" 
+             target="_blank" 
+             rel="noopener noreferrer" 
+             className="flex items-center justify-center gap-3 bg-[#111111] border border-white/5 hover:border-[#25D366] hover:bg-[#25D366]/10 text-gray-300 hover:text-[#25D366] px-6 py-4 rounded-xl transition-all duration-300 group"
+          >
             <WhatsAppIcon />
             <span className="font-medium text-lg">WhatsApp</span>
-          </a>
+          </motion.a>
 
-          <a href="mailto:kaio@outlook.com" 
-             className="flex items-center justify-center gap-3 bg-[#111111] border border-white/5 hover:border-blue-500 hover:bg-blue-500/10 text-gray-300 hover:text-blue-500 px-6 py-4 rounded-xl transition-all duration-300 group">
+          <motion.a 
+             variants={itemVariants}
+             href="mailto:kaio@outlook.com" 
+             className="flex items-center justify-center gap-3 bg-[#111111] border border-white/5 hover:border-blue-500 hover:bg-blue-500/10 text-gray-300 hover:text-blue-500 px-6 py-4 rounded-xl transition-all duration-300 group"
+          >
             <MailIcon />
             <span className="font-medium text-lg">E-mail</span>
-          </a>
+          </motion.a>
 
-          <a href="https://linkedin.com/in/kaiomiyasato" target="_blank" rel="noopener noreferrer" 
-             className="flex items-center justify-center gap-3 bg-[#111111] border border-white/5 hover:border-[#0A66C2] hover:bg-[#0A66C2]/10 text-gray-300 hover:text-[#0A66C2] px-6 py-4 rounded-xl transition-all duration-300 group">
+          <motion.a 
+             variants={itemVariants}
+             href="https://linkedin.com/in/kaiomiyasato" 
+             target="_blank" 
+             rel="noopener noreferrer" 
+             className="flex items-center justify-center gap-3 bg-[#111111] border border-white/5 hover:border-[#0A66C2] hover:bg-[#0A66C2]/10 text-gray-300 hover:text-[#0A66C2] px-6 py-4 rounded-xl transition-all duration-300 group"
+          >
             <LinkedInIcon />
             <span className="font-medium text-lg">LinkedIn</span>
-          </a>
+          </motion.a>
 
-          <a href="https://github.com/KaioMiy" target="_blank" rel="noopener noreferrer" 
-             className="flex items-center justify-center gap-3 bg-[#111111] border border-white/5 hover:border-white/30 hover:bg-white/5 text-gray-300 hover:text-white px-6 py-4 rounded-xl transition-all duration-300 group">
+          <motion.a 
+             variants={itemVariants}
+             href="https://github.com/KaioMiy" 
+             target="_blank" 
+             rel="noopener noreferrer" 
+             className="flex items-center justify-center gap-3 bg-[#111111] border border-white/5 hover:border-white/30 hover:bg-white/5 text-gray-300 hover:text-white px-6 py-4 rounded-xl transition-all duration-300 group"
+          >
             <GitHubIcon />
             <span className="font-medium text-lg">GitHub</span>
-          </a>
+          </motion.a>
 
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
-      {/* Footer simples */}
-      <div className="max-w-6xl mx-auto w-full border-t border-white/5 pt-8 mt-8 flex flex-col md:flex-row items-center justify-between text-gray-500 text-sm">
+      {/* Footer com Fade-in sutil */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: false }}
+        transition={{ duration: 0.8, delay: 0.4 }}
+        className="max-w-6xl mx-auto w-full border-t border-white/5 pt-8 mt-8 flex flex-col md:flex-row items-center justify-between text-gray-500 text-sm"
+      >
         <p>© 2026 Kaio Miyasato. Todos os direitos reservados.</p>
         <p className="mt-2 md:mt-0">Desenvolvido com Next.js & Tailwind</p>
-      </div>
+      </motion.div>
       
     </section>
   );

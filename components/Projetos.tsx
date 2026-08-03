@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion, Variants } from "framer-motion";
 
 // --- ÍCONES SVG PUROS ---
 function GithubIcon() {
@@ -63,6 +64,26 @@ type Projeto = {
   linkProjeto: string;
   linkGithub: string;
   galeria: string[]; 
+};
+
+// --- VARIANTES DE ANIMAÇÃO ---
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.6, ease: "easeOut" } 
+  },
 };
 
 export default function Projetos() {
@@ -142,12 +163,12 @@ export default function Projetos() {
     },
     {
       id: 6,
-      titulo: "Museu Digital", // Retirei o (Em Dev) do título para deixar mais limpo, já que a imagem avisa
+      titulo: "Museu Digital",
       descricao: "Desenvolvimento Full Stack de um sistema interativo para a prefeitura, focado na digitalização, catalogação e exposição virtual de acervos históricos e culturais.",
       tecnologias: ["Next.js", "PostgreSQL", "Tailwind"],
       linkProjeto: "",
       linkGithub: "", 
-      galeria: [] // Galeria vazia = sem imagem!
+      galeria: [] 
     }
   ];
 
@@ -189,7 +210,14 @@ export default function Projetos() {
 
         <div className="max-w-7xl mx-auto w-full relative z-10">
           
-          <div className="mb-16 md:mb-20">
+          {/* Título Animado */}
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3 }}
+            variants={itemVariants}
+            className="mb-16 md:mb-20"
+          >
             <p className="text-blue-600 font-bold tracking-wider uppercase text-sm mb-3">
               Meu Portfólio
             </p>
@@ -200,16 +228,23 @@ export default function Projetos() {
               Uma seleção das melhores soluções corporativas e governamentais que desenvolvi, unindo 
               arquitetura robusta no back-end, inteligência artificial e interfaces de alta performance.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+          {/* Grid Animado (Stagger) */}
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.1 }}
+            variants={containerVariants}
+            className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"
+          >
             
             {projetos.map((projeto) => (
-              <div 
+              <motion.div 
                 key={projeto.id}
+                variants={itemVariants}
                 className="flex flex-col rounded-2xl bg-[#161616] border border-white/10 overflow-hidden group hover:-translate-y-2 hover:border-blue-500/50 hover:shadow-[0_0_30px_-5px_rgba(37,99,235,0.2)] transition-all duration-300"
               >
-                {/* Lógica Condicional para a Área da Imagem */}
                 <div 
                   className={`relative w-full aspect-video overflow-hidden bg-[#222] ${projeto.galeria.length > 0 ? 'cursor-pointer' : 'cursor-default'}`}
                   onClick={() => abrirModal(projeto)}
@@ -233,7 +268,6 @@ export default function Projetos() {
                       </div>
                     </>
                   ) : (
-                    // Fundo que aparece quando a galeria está vazia (ex: Museu Digital)
                     <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#1a1a1a] text-gray-500 font-semibold z-10">
                       <svg className="w-8 h-8 mb-2 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
@@ -294,20 +328,25 @@ export default function Projetos() {
                     )}
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
 
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* --- MODAL --- */}
+      {/* --- MODAL COM ANIMAÇÃO --- */}
       {projetoAberto && projetoAberto.galeria.length > 0 && (
-        <div 
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 md:p-12"
           onClick={fecharModal} 
         >
-          <div 
+          <motion.div 
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.3 }}
             className="relative w-full max-w-6xl max-h-full flex flex-col items-center justify-center"
             onClick={(e) => e.stopPropagation()} 
           >
@@ -356,8 +395,8 @@ export default function Projetos() {
                 ))}
               </div>
             )}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
     </>
   );

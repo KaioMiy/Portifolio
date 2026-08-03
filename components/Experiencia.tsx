@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { motion, Variants } from "framer-motion";
 
 function BriefcaseIcon() {
   return (
@@ -10,6 +11,26 @@ function BriefcaseIcon() {
     </svg>
   );
 }
+
+// --- VARIANTES DE ANIMAÇÃO ---
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2, // Tempo entre a aparição de cada experiência na timeline
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.6, ease: "easeOut" } 
+  },
+};
 
 export default function Experiencia() {
   const experiencias = [
@@ -68,32 +89,41 @@ export default function Experiencia() {
 
       <div className="max-w-6xl mx-auto w-full relative z-10">
         
-        {/* Cabeçalho Limpo */}
-        <div className="mb-16 md:mb-24 text-center">
+        {/* Cabeçalho Animado */}
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.3 }}
+          variants={itemVariants}
+          className="mb-16 md:mb-24 text-center"
+        >
           <p className="text-blue-600 font-bold tracking-wider uppercase text-sm mb-3">
             Carreira
           </p>
           <h2 className="font-title text-4xl md:text-5xl font-bold text-gray-100">
             Minha Jornada Profissional
           </h2>
-          {/* NOVA FRASE AQUI */}
           <p className="text-gray-400 mt-4 text-base md:text-lg max-w-2xl mx-auto">
             Uma visão geral das minhas experiências, desde o suporte e infraestrutura até o desenvolvimento de soluções escaláveis e interfaces de alta performance.
           </p>
-        </div>
+        </motion.div>
 
-        {/* --- LAYOUT MOBILE (Linha Vertical) --- */}
-        <div className="md:hidden relative border-l border-blue-500/30 ml-4 space-y-12">
+        {/* --- LAYOUT MOBILE Animado (Linha Vertical) --- */}
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.1 }}
+          variants={containerVariants}
+          className="md:hidden relative border-l border-blue-500/30 ml-4 space-y-12"
+        >
           {experiencias.map((exp) => (
-            <div key={exp.id} className="relative pl-8">
+            <motion.div key={exp.id} variants={itemVariants} className="relative pl-8">
               
               {/* Pin Mobile */}
               <div className="absolute -left-[21px] top-1 flex items-center justify-center z-10">
-                {/* Anel de respiração (se for atual) */}
                 {exp.atual && (
                   <div className="absolute -inset-2 bg-blue-500 rounded-full animate-breathe-zero blur-[2px]"></div>
                 )}
-                {/* Pin central estático */}
                 <div className={`relative h-10 w-10 border-2 rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(37,99,235,0.4)] ${exp.atual ? 'bg-blue-600 border-blue-300' : 'bg-[#0A0A0A] border-blue-500'}`}>
                   <BriefcaseIcon />
                 </div>
@@ -102,7 +132,6 @@ export default function Experiencia() {
               {/* Card Mobile */}
               <div className={`bg-[#111111] p-6 rounded-2xl border transition-colors duration-300 hover:border-blue-500/60 ${exp.atual ? 'border-blue-500/30' : 'border-white/5'}`}>
                 
-                {/* Logo na ESQUERDA, Texto na DIREITA */}
                 <div className="flex items-center gap-4 mb-5">
                   <img src={exp.logo} className={`${exp.logoClass} shrink-0`} onError={(e) => e.currentTarget.style.opacity = '0'} />
                   <div>
@@ -134,12 +163,18 @@ export default function Experiencia() {
                   ))}
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
-        {/* --- LAYOUT DESKTOP (Timeline Horizontal em Zigue-Zague) --- */}
-        <div className="hidden md:grid grid-cols-3 grid-rows-[1fr_1fr] gap-x-6 relative w-full">
+        {/* --- LAYOUT DESKTOP Animado (Timeline Horizontal em Zigue-Zague) --- */}
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.2 }}
+          variants={containerVariants}
+          className="hidden md:grid grid-cols-3 grid-rows-[1fr_1fr] gap-x-6 relative w-full"
+        >
           
           {/* Linha Central Horizontal */}
           <div className="absolute top-1/2 -left-12 -right-12 h-[2px] bg-gradient-to-r from-transparent via-blue-500/40 to-transparent -translate-y-1/2 z-0" />
@@ -150,22 +185,18 @@ export default function Experiencia() {
             const rowStartClass = isTop ? "row-start-1 justify-end pb-8" : "row-start-2 justify-start pt-8";
 
             return (
-              <div key={exp.id} className={`relative flex flex-col h-full w-full ${colStartClass} ${rowStartClass}`}>
+              <motion.div key={exp.id} variants={itemVariants} className={`relative flex flex-col h-full w-full ${colStartClass} ${rowStartClass}`}>
                 
                 {/* Conjunto do Pin (Estático + Aura Respirando) */}
                 <div className={`absolute ${isTop ? '-bottom-3' : '-top-3'} left-1/2 -translate-x-1/2 flex items-center justify-center z-10`}>
                   
-                  {/* Aura (Anel externo de respiração) só aparece no Atual */}
                   {exp.atual && (
                     <div className="absolute -inset-2 bg-blue-500 rounded-full animate-breathe-zero blur-[2px]"></div>
                   )}
                   
-                  {/* Pin Central (Fixo) */}
                   <div className={`relative w-6 h-6 rounded-full shadow-[0_0_15px_rgba(37,99,235,0.6)] ${exp.atual ? 'bg-blue-500 border-2 border-blue-200' : 'bg-[#050505] border-4 border-blue-500'}`}>
-                     {/* Pontinho branco central extra para o atual */}
                      {exp.atual && <div className="absolute inset-0 m-auto w-2 h-2 bg-white rounded-full"></div>}
                   </div>
-
                 </div>
                 
                 {/* Haste */}
@@ -174,7 +205,6 @@ export default function Experiencia() {
                 {/* Card de Experiência */}
                 <div className={`bg-[#111111] p-6 lg:p-8 rounded-2xl border transition-colors duration-300 hover:border-blue-500/60 w-full relative z-20 shadow-xl ${exp.atual ? 'border-blue-500/30' : 'border-white/5'}`}>
                   
-                  {/* Logo na ESQUERDA, Texto na DIREITA */}
                   <div className="flex items-center gap-5 mb-5">
                     <img src={exp.logo} className={`${exp.logoClass} shrink-0`} onError={(e) => e.currentTarget.style.opacity = '0'} />
                     <div>
@@ -207,10 +237,10 @@ export default function Experiencia() {
                   </div>
                 </div>
 
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
 
       </div>
     </section>
