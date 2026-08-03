@@ -22,7 +22,7 @@ const containerVariants: Variants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.2, // Tempo de espera entre cada elemento aparecendo
+      staggerChildren: 0.2, 
       delayChildren: 0.1,
     },
   },
@@ -41,7 +41,8 @@ export default function Hero() {
   return (
     <section 
       id="inicio" 
-      className="relative h-screen pt-20 px-6 md:px-12 flex items-center justify-center w-full overflow-hidden bg-[#0F0F0F]"
+      // Ajuste crucial: min-h-[100dvh] para o celular crescer se precisar, pt-32 para fugir da navbar no mobile
+      className="relative min-h-[100dvh] lg:h-screen pt-32 pb-16 lg:pt-20 lg:pb-0 px-6 md:px-12 flex items-center justify-center w-full overflow-hidden bg-[#0F0F0F]"
     >
       <div className="absolute inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff1a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff1a_1px,transparent_1px)] bg-[size:80px_80px] [mask-image:radial-gradient(ellipse_at_center,transparent_65%,black_100%)]"></div>
@@ -50,13 +51,14 @@ export default function Hero() {
       <motion.div 
         variants={containerVariants}
         initial="hidden"
-        whileInView="visible" // <-- Alterado de animate para whileInView
-        viewport={{ once: false, amount: 0.1 }} // <-- Adicionado para reanimar sempre
-        className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10 scale-[1.05] lg:scale-[1.10] origin-center transition-transform"
+        whileInView="visible" 
+        viewport={{ once: false, amount: 0.1 }} 
+        // Escala normal no mobile (scale-100) e zoom apenas no desktop (md/lg:scale)
+        className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 scale-100 md:scale-[1.05] lg:scale-[1.10] origin-center transition-transform"
       >
         
         {/* Coluna Esquerda - Ocupa 7 das 12 colunas */}
-        <div className="space-y-5 lg:col-span-7">
+        <div className="space-y-5 lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left">
           <motion.p variants={itemVariants} className="text-gray-400 font-medium tracking-wider uppercase text-xs md:text-sm">
             Bem-vindo ao meu portfólio
           </motion.p>
@@ -69,12 +71,12 @@ export default function Hero() {
             Desenvolvedor Full Stack
           </motion.h1>
           
-          <motion.p variants={itemVariants} className="text-gray-400 text-base md:text-lg max-w-xl pb-2 md:pb-4">
+          <motion.p variants={itemVariants} className="text-gray-400 text-base md:text-lg max-w-xl pb-2 md:pb-4 mx-auto lg:mx-0">
             Focado em construir experiências digitais incríveis, 
             performáticas e escaláveis para o usuário final.
           </motion.p>
           
-          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 items-center pt-2">
+          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 items-center justify-center lg:justify-start pt-2 w-full sm:w-auto">
             
             <a 
               href="#projetos" 
@@ -92,10 +94,10 @@ export default function Hero() {
             </a>
             
             <div className="flex items-center gap-3 pt-2 sm:pt-0">
-              <a href="https://linkedin.com/in/SEUPERFIL" target="_blank" rel="noreferrer" className="p-3 bg-white rounded-lg text-black hover:bg-gray-200 transition-colors">
+              <a href="https://linkedin.com/in/kaiomiyasato" target="_blank" rel="noreferrer" className="p-3 bg-white rounded-lg text-black hover:bg-gray-200 transition-colors">
                 <LinkedinIcon />
               </a>
-              <a href="https://github.com/SEUGITHUB" target="_blank" rel="noreferrer" className="p-3 bg-white rounded-lg text-black hover:bg-gray-200 transition-colors">
+              <a href="https://github.com/KaioMiy" target="_blank" rel="noreferrer" className="p-3 bg-white rounded-lg text-black hover:bg-gray-200 transition-colors">
                 <GithubIcon />
               </a>
             </div>
@@ -106,11 +108,11 @@ export default function Hero() {
         {/* Coluna Direita - Ocupa 5 das 12 colunas */}
         <motion.div 
           variants={itemVariants}
-          className="relative flex justify-center lg:justify-end w-full lg:col-span-5"
+          className="relative flex justify-center lg:justify-end w-full lg:col-span-5 mt-4 lg:mt-0"
         >
-          <div className="w-full max-w-md p-6 sm:p-8 space-y-6 rounded-2xl bg-[#1a1a1a]/80 backdrop-blur-sm border border-white/5 shadow-[0_0_50px_10px_rgba(0,0,0,0.5)] relative z-10">
+          <div className="w-full max-w-md p-6 sm:p-8 space-y-5 rounded-2xl bg-[#1a1a1a]/80 backdrop-blur-sm border border-white/5 shadow-[0_0_50px_10px_rgba(0,0,0,0.5)] relative z-10">
             
-            <div className="relative w-40 sm:w-48 lg:w-56 mx-auto aspect-square overflow-hidden rounded-full border-4 border-[#2a2a2a] bg-[#0F0F0F]">
+            <div className="relative w-36 sm:w-48 lg:w-56 mx-auto aspect-square overflow-hidden rounded-full border-4 border-[#2a2a2a] bg-[#0F0F0F]">
               <img 
                 src="/perfil.png" 
                 alt="Kaio Miyasato"
@@ -122,7 +124,7 @@ export default function Hero() {
               <h3 className="font-title text-xl font-bold text-gray-100 text-center">
                 Sobre mim
               </h3>
-              <p className="text-gray-400 leading-relaxed text-xs sm:text-sm text-justify">
+              <p className="text-gray-400 leading-relaxed text-sm md:text-sm text-center lg:text-justify">
                 Desenvolvedor Full Stack focado em criar aplicações web escaláveis. 
                 Trago um olhar diferenciado para o design de interfaces, proporção 
                 e usabilidade. Atuo criando soluções corporativas e liderando projetos 
