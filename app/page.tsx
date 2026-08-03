@@ -4,6 +4,7 @@ import Tecnologias from "../components/Tecnologias";
 import Projetos from "../components/Projetos";
 import Certificados from "../components/Certificados";
 import Experiencia from "@/components/Experiencia";
+import Contato from "../components/Contato";
 
 export default function Home() {
   return (
@@ -23,6 +24,8 @@ export default function Home() {
       <Certificados />
 
       <Experiencia />
+
+      <Contato />
       
     </main>
   );

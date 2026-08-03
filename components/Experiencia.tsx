@@ -29,7 +29,7 @@ export default function Experiencia() {
       periodo: "2025 - 2026",
       logo: "/xp/lynqy.svg",
       logoClass: "h-6 lg:h-8 w-auto object-contain",
-      descricao: "Desenvolvimento de todas as telas do software da plataforma. Trabalho focado na componentização da interface, garantindo alta performancee responsividade.",
+      descricao: "Desenvolvimento de todas as telas do software da plataforma. Trabalho focado na componentização da interface, garantindo alta performance e responsividade.",
       tecnologias: ["Next.js", "React", "Node.js", "Tailwind"],
       atual: false
     },
@@ -50,6 +50,17 @@ export default function Experiencia() {
       id="experiencia" 
       className="w-full py-24 px-6 md:px-12 bg-[#050505] relative z-10 border-t border-white/5 overflow-hidden"
     >
+      {/* Estilo injetado para a animação de respirar até 0 de opacidade */}
+      <style>{`
+        @keyframes breathe-zero {
+          0%, 100% { opacity: 0.8; transform: scale(1); }
+          50% { opacity: 0; transform: scale(1.1); }
+        }
+        .animate-breathe-zero {
+          animation: breathe-zero 3s ease-in-out infinite;
+        }
+      `}</style>
+
       {/* Grid Invertido: Aparece no centro e some nas bordas */}
       <div className="absolute inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff15_1px,transparent_1px),linear-gradient(to_bottom,#ffffff15_1px,transparent_1px)] bg-[size:80px_80px] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]"></div>
@@ -65,6 +76,10 @@ export default function Experiencia() {
           <h2 className="font-title text-4xl md:text-5xl font-bold text-gray-100">
             Minha Jornada Profissional
           </h2>
+          {/* NOVA FRASE AQUI */}
+          <p className="text-gray-400 mt-4 text-base md:text-lg max-w-2xl mx-auto">
+            Uma visão geral das minhas experiências, desde o suporte e infraestrutura até o desenvolvimento de soluções escaláveis e interfaces de alta performance.
+          </p>
         </div>
 
         {/* --- LAYOUT MOBILE (Linha Vertical) --- */}
@@ -76,7 +91,7 @@ export default function Experiencia() {
               <div className="absolute -left-[21px] top-1 flex items-center justify-center z-10">
                 {/* Anel de respiração (se for atual) */}
                 {exp.atual && (
-                  <div className="absolute -inset-2 bg-blue-500/30 rounded-full animate-pulse blur-[1px]"></div>
+                  <div className="absolute -inset-2 bg-blue-500 rounded-full animate-breathe-zero blur-[2px]"></div>
                 )}
                 {/* Pin central estático */}
                 <div className={`relative h-10 w-10 border-2 rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(37,99,235,0.4)] ${exp.atual ? 'bg-blue-600 border-blue-300' : 'bg-[#0A0A0A] border-blue-500'}`}>
@@ -142,7 +157,7 @@ export default function Experiencia() {
                   
                   {/* Aura (Anel externo de respiração) só aparece no Atual */}
                   {exp.atual && (
-                    <div className="absolute -inset-2 bg-blue-500/30 border border-blue-400/50 rounded-full animate-pulse blur-[1px]"></div>
+                    <div className="absolute -inset-2 bg-blue-500 rounded-full animate-breathe-zero blur-[2px]"></div>
                   )}
                   
                   {/* Pin Central (Fixo) */}
